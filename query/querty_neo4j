@@ -1,0 +1,14 @@
+=========================
+== Query lấy toàn bộ thông tin liên quan đén số TK & kho số
+========================
+
+MATCH (joinGroup:JoinGroup)-[:TARGET_NODE]->(vipAccountGroup:VipAccountGroup),
+      (vipAccount:VipAccount)-[:JOIN_GROUP]->(joinGroup)
+RETURN joinGroup, vipAccountGroup, vipAccount
+
+
+
+=========================
+== Recommend Or Suggest Vip Account Number
+========================
+MATCH (vip:VipAccount) WHERE vip.vipAccountNumber CONTAINS $searchTerm RETURN vip.vipAccountNumber

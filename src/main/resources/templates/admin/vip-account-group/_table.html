@@ -1,0 +1,27 @@
+<div class="card" xmlns:th="http://www.thymeleaf.org">
+	<table class="table">
+	    <thead>
+	        <tr>
+	            <th>STT</th>
+	            <th>Mã</th>
+	            <th>Tê nhóm</th>
+	            <th>Mô tả</th>
+	            <th></th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="itm, st : ${page.content}">
+	            <td th:text="${st.count + page.number * page.size}"></td>
+	            <td th:text="${itm.id}"></td>
+	            <td th:text="${itm.name}"></td>
+	            <td th:text="${itm.description}"></td>
+	            <td>
+	                <hr th:replace="/admin/shared/frags::lnk-crud('vip-account-group', ${itm.id})"/>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+	<div class="card-footer">
+		<div th:replace="/admin/vip-account-group/_pager"></div>
+	</div>
+</div>

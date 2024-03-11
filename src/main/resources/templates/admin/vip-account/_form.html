@@ -1,0 +1,27 @@
+<div xmlns:th="http://www.thymeleaf.org">
+	
+    <form th:object="${item}" class="card" method="post" enctype="multipart/form-data">
+        <div class="card-body">
+        	<div class="row">
+		        <div class="row mb-3">
+		        	<div class="col">
+			            <label>Số tài khoản chứng khóa</label>
+			            <input th:field="*{vipAccountNumber}" class="form-control">
+			        </div>
+			        <div class="col">
+			            <label>Kho số</label>
+						<select th:field="*{groupId}" class="form-select">
+							<option th:each="group : ${groups}"
+									th:value="${group.id}"
+									th:text="${group.name}"
+									th:selected="${group.id == groupId}"></option>
+						</select>
+			        </div>
+			    </div>
+			</div>
+        </div>
+        <div class="card-footer">
+            <hr th:replace="/admin/shared/frags::btn-crud('vip-account', *{id})"/>
+        </div>
+    </form>
+</div>

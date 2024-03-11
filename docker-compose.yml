@@ -1,6 +1,25 @@
-version: '3.7'
+version: '3.8'
 
 services:
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: com.demo.neo4j:latest
+    container_name: neo4j_connector_service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_NEO4J_URI=bolt://neo4j:7687
+      - SPRING_DATA_NEO4J_DATABASE=neo4j
+      - SPRING_DATA_NEO4J_USERNAME=neo4j
+      - SPRING_DATA_NEO4J_PASSWORD=1234
+    depends_on:
+      - neo4j
+    networks:
+      - neo_net
+    restart: always
+
   neo4j:
     image: neo4j:4.2.3-enterprise
     container_name: "neo4j-demo"
@@ -23,6 +42,7 @@ services:
       - NEO4J_dbms_memory_heap_max__size=4G
     networks:
       - neo_net
+
 
 networks:
   neo_net:
