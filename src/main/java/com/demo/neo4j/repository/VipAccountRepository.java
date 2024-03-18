@@ -15,4 +15,6 @@ public interface VipAccountRepository extends Neo4jRepository<VipAccount, UUID> 
     //    @Query("MATCH (vip:VipAccount) WHERE vip.vipAccountNumber CONTAINS $vipAccountNumber ")
     List<VipAccount> findByVipAccountNumberContaining(String vipAccountNumber);
 
+    VipAccount findFirstByVipAccountNumber(String vipAccountNumber );
+
 }

@@ -4,6 +4,7 @@ import com.demo.neo4j.entity.JoinGroup;
 import com.demo.neo4j.entity.VipAccount;
 import com.demo.neo4j.entity.VipAccountGroup;
 import com.demo.neo4j.repository.JoinGroupRepository;
+import com.demo.neo4j.repository.VipAccountRepository;
 import com.demo.neo4j.request.VipAccountFilter;
 import com.demo.neo4j.request.VipAccountRequest;
 import com.demo.neo4j.service.VipAccountGroupService;
@@ -40,6 +41,10 @@ public class VipAccountController {
     @Autowired
     SessionService sessionService;
 
+    @Autowired
+    VipAccountRepository vipAccountRepository;
+
+
 
     @RequestMapping("/paginate/{pageNumber}")
     public String paginate(Model model, @PathVariable("pageNumber") Integer pageNumber) {
@@ -54,6 +59,21 @@ public class VipAccountController {
         return "forward:/admin/vip-account/paginate/0";
     }
 
+    @RequestMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable("id") UUID id) {
+        VipAccount vipAccount = vipAccountService.getVipAccountById(id).orElse(null);
+
+        VipAccountRequest item = new VipAccountRequest();
+        item.setId(vipAccount.getId());
+        item.setVipAccountNumber(vipAccount.getVipAccountNumber());
+
+        vipAccount.getJoinGroups().forEach(data -> item.setGroupId(data.getVipAccountGroup().getId()));
+
+        model.addAttribute("item", item);
+        model.addAttribute("edit", true);
+        return this.forward(model);
+    }
+
     @RequestMapping("/reset")
     public String reset(Model model) {
         model.addAttribute("edit", true);
@@ -64,7 +84,6 @@ public class VipAccountController {
     public String index(Model model) {
         model.addAttribute("edit", false);
         model.addAttribute("item", new VipAccountRequest());
-        model.addAttribute("groups", this.getVipAccountGroups());
         return this.forward(model);
     }
 
@@ -138,6 +157,7 @@ public class VipAccountController {
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<VipAccount> page = vipAccountService.findPageByFilter(pageable);
         model.addAttribute("page", page);
+        model.addAttribute("groups", this.getVipAccountGroups());
         return "admin/vip-account/index";
     }
 

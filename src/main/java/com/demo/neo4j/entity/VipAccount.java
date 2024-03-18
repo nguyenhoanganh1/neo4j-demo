@@ -22,6 +22,8 @@ public class VipAccount {
 
     private String vipAccountNumber;
 
+    private boolean isUsed = false;
+
     @Relationship(type = "JOIN_GROUP", direction = Relationship.Direction.OUTGOING)
     private List<JoinGroup> joinGroups;
 }
